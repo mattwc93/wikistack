@@ -21,7 +21,6 @@ module.exports = (pages) => layout(html`
     <ul>
       ${pages.map(page => html`
         <div>
-          <h4>ID: ${page.id}<h4>
           <h3><a href = '/wiki/${page.slug}'>${page.title}</a></h3>
           <p>STATUS: ${page.status}</p>
         </div>`
