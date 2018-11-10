@@ -2,12 +2,13 @@ const html = require("html-template-tag");
 const layout = require("./layout");
 const { User } = require('../models')
 
-const getAuthorName = async (authId) => {
-  let author = await User.findById(authId);
-  author = author.name;
-  return author;
-}
-
+// const getAuthorName = async (authId) => {
+//   let author = await User.findById(authId);
+//   author = author.name;
+//   return author;
+// }
+// How can we do this and have it display each pages author in the page listing using
+// something like <h4> by ${getAuthorName(page.authorId)}</h4> ?
 module.exports = (pages) => layout(html`
   <h3>Pages</h3>
   <hr>
@@ -22,7 +23,6 @@ module.exports = (pages) => layout(html`
         <div>
           <h4>ID: ${page.id}<h4>
           <h3><a href = '/wiki/${page.slug}'>${page.title}</a></h3>
-          <h4> by ${getAuthorName(page.authorId)}</h4>
           <p>STATUS: ${page.status}</p>
         </div>`
         )}
