@@ -8,7 +8,7 @@ const slugger = (title) => {
 const Page = db.define('page', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   slug: {
     type: Sequelize.STRING,
@@ -39,5 +39,8 @@ const User = db.define('user', {
     allowNull: false
   }
 });
+
+Page.belongsTo(User, { as: 'author' });
+User.hasMany(Page);
 
 module.exports = { db, Page, User };

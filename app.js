@@ -1,9 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const views = require('./views/index');
-const layout = require('./views/layout');
 const { db } = require('./models');
+const { Page } = require('./models');
 const path = require('path');
+
 
 let app = express();
 let port = 3000;
@@ -25,9 +26,10 @@ const init = async () => {
   }
 }
 
-app.get('/', (req, res, next) => {
+app.get('/', async (req, res, next) => {
   try {
-    res.send(layout('Hello World!'));
+    const allPages = await Page.findAll();
+    res.send(views.main(allPages));
   } catch (error) {
     next(error);
   }
