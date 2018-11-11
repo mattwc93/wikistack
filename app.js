@@ -4,13 +4,13 @@ const views = require('./views/index');
 const { db, Page } = require('./models');
 const path = require('path');
 
-
 let app = express();
 let port = 3000;
 
 app.use(volleyball);
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, '/public')));
+
 app.use('/users', require('./routes/user.js'));
 app.use('/wiki', require('./routes/wiki.js'));
 
