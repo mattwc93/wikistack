@@ -4,7 +4,7 @@ const layout = require("./layout");
 module.exports = () => layout(html`
   <h3>Add a Page</h3>
   <hr>
-  <form method="POST" action="/wiki/">
+  <form class="addForm" method="POST" action="/wiki/">
   
     <div class="form-group">
       <label for="name" class="col-sm-2 control-label">Name</label>
@@ -30,14 +30,14 @@ module.exports = () => layout(html`
     <div class="form-group">
       <label for="content" class="col-sm-2 control-label">Content</label>
       <div class="col-sm-10">
-        <textarea name="content" required></textarea>
+        <textarea name="content" id="content" class="form-control" required></textarea>
       </div>
     </div>
   
     <div class="form-group">
       <label for="status" class="col-sm-2 control-label">Status</label>
       <div class="col-sm-10">
-        <select name="status">
+        <select name="status" id="statusBox">
           <option>open</option>
           <option>closed</option>
         </select>

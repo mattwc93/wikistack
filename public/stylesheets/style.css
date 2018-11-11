@@ -1,8 +1,35 @@
+
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#content { 
+  width: 805px;
+  height: 200px;
+  resize: none;
+}
+
 a {
   color: #00B7FF;
 }
+
+
+#statusBox {
+  margin: 0 0 10px 0;
+}
+
+.form-control {
+  margin: 0px 0 10px 0;
+}
+
+label {
+  text-align: right;
+}
+
+.addForm {
+  margin: 0px 135px 0 0;
+}
+
+

@@ -64,7 +64,7 @@ router.post('/:slug', async (req, res, next) => {
     });
     await page.update(req.body);
     await page.update({slug: req.params.slug})
-    const [author, wasCreated] = await User.findOrCreate({
+    const [author] = await User.findOrCreate({
       where: {
         name: req.body.name,
         email: req.body.email
@@ -80,7 +80,7 @@ router.post('/:slug', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const page = new Page(req.body);
   try {
-    const [user, wasCreated] = await User.findOrCreate({
+    const [user] = await User.findOrCreate({
       where: {
         name: req.body.name,
         email: req.body.email,
@@ -93,5 +93,4 @@ router.post('/', async (req, res, next) => {
     next(error);
   }
 });
-
 
