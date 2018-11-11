@@ -1,15 +1,14 @@
 const express = require('express');
-const morgan = require('morgan');
+const volleyball = require('volleyball');
 const views = require('./views/index');
-const { db } = require('./models');
-const { Page } = require('./models');
+const { db, Page } = require('./models');
 const path = require('path');
 
 
 let app = express();
 let port = 3000;
 
-app.use(morgan('dev'));
+app.use(volleyball);
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/users', require('./routes/user.js'));
@@ -29,10 +28,14 @@ const init = async () => {
 app.get('/', async (req, res, next) => {
   try {
     const allPages = await Page.findAll();
-    res.send(views.main(allPages));
+    res.send(await views.main(allPages));
   } catch (error) {
     next(error);
   }
+});
+
+app.get('/:notfound', (req, res, next) => {
+  res.status(404).send(views.noPage('Invalid URL'));
 });
 
 db.authenticate().

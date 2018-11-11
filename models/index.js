@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://localhost:5432/wikistack');
+const db = new Sequelize('postgres://localhost:5432/wikistack', {logging: false});
 
 const slugger = (title) => {
-  return title.replace(/[^a-zA-Z0-9\s]/g, '').replace(/ /g, '_');
+  return title.replace(/\s+/g, '_').replace(/\W/g, '');
 }
 
 const Page = db.define('page', {
@@ -36,7 +36,7 @@ const User = db.define('user', {
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   }
 });
 

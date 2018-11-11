@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const { addPage } = require('../views/');
-const { Page } = require('../models');
-const { User } = require('../models')
-const { wikiPage } = require('../views');
+const { Page, User } = require('../models');
+const { wikiPage, noPage, editPage } = require('../views');
 
 module.exports = router;
 
@@ -28,34 +27,71 @@ router.get('/:slug', async (req, res, next) => {
       where: { slug: `${req.params.slug}` }
     });
     let author = await page.getAuthor();
-    author = author.name;
     res.send(wikiPage(page, author));
+  } catch (error) {
+    res.status(404).send(noPage('No Page with this title found!'));
+  }
+});
+
+router.get('/:slug/delete', async (req, res, next) => {
+  try {
+    const page = await Page.findOne({
+      where: { slug: `${req.params.slug}` }
+    });
+    await page.destroy();
+    res.redirect('/');
+  } catch (error) {
+    res.status(404).send(noPage('Delete failed!'));
+  }
+});
+
+router.get('/:slug/edit', async (req, res, next) => {
+  try {
+    const page = await Page.findOne({
+      where: { slug: `${req.params.slug}` }
+    });
+    let author = await page.getAuthor();
+    res.send(editPage(page, author));
+  } catch (error) {
+    res.status(404).send(noPage('No Page with this title found!'));
+  }
+});
+
+router.post('/:slug', async (req, res, next) => {
+  try {
+    const page = await Page.findOne({
+      where: { slug: `${req.params.slug}` }
+    });
+    await page.update(req.body);
+    await page.update({slug: req.params.slug})
+    const [author, wasCreated] = await User.findOrCreate({
+      where: {
+        name: req.body.name,
+        email: req.body.email
+      }
+    });
+    page.setAuthor(author);
+    res.redirect(`./${page.slug}`);
   } catch (error) {
     next(error);
   }
 });
 
 router.post('/', async (req, res, next) => {
-  let user = await User.findOne({ where: { name: req.body.name } });
-  if (!user) {
-    user = new User({
-      name: req.body.name,
-      email: req.body.email
-    });
-    await user.save();
-  }
-  const page = new Page({
-    title: req.body.title,
-    content: req.body.content,
-    slug: req.body.slug,
-    status: req.body.status,
-  });
-  page.setAuthor(user.id);
+  const page = new Page(req.body);
   try {
+    const [user, wasCreated] = await User.findOrCreate({
+      where: {
+        name: req.body.name,
+        email: req.body.email,
+      }
+    });
     await page.save();
+    page.setAuthor(user);
     res.redirect(`./${page.slug}`);
   } catch (error) {
     next(error);
   }
 });
+
 

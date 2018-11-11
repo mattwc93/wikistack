@@ -1,6 +1,5 @@
 const html = require("html-template-tag");
 const layout = require("./layout");
-const { User } = require('../models')
 
 // const getAuthorName = async (authId) => {
 //   let author = await User.findById(authId);
